@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">HardDance</string>
+    <string name="cover_uri">https://img.hearthis.at/1/5/0/_/uploads/8791816/image_user/w800_q70_----1506975763.jpg</string>
+
+    <!-- Notificaiton Channel -->
+    <string name="notification_channel_string">Now Playing</string>
+    <string name="notification_channel_description">Shows what music is currently playing</string>
+    <string name="pause">Pause</string>
+</resources>
