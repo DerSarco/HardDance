@@ -1,17 +1,14 @@
 package com.example.harddance.player.service
 
 import android.content.Context
-import android.media.session.MediaSession
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
 import com.example.harddance.R
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.google.android.exoplayer2.ui.PlayerNotificationManager.NotificationListener
 
 class HDANotificationManager(
-    private val context: Context,
-    private val exoPlayer: ExoPlayer
+    private val context: Context
 ) {
 
     private var notificationManager: PlayerNotificationManager? = null
@@ -35,7 +32,6 @@ class HDANotificationManager(
 
         this.notificationManager?.apply {
             setMediaSessionToken(mediaSession.sessionToken)
-            setPlayer(exoPlayer)
             setColorized(true)
             setUseChronometer(true)
             setSmallIcon(R.drawable.ic_notification)
@@ -45,5 +41,13 @@ class HDANotificationManager(
             setUsePlayPauseActions(true)
             setUseStopAction(true)
         }
+    }
+
+    fun showNotification(exoPlayer: ExoPlayer) {
+        this.notificationManager?.setPlayer(exoPlayer)
+    }
+
+    fun disposeNotification() {
+        this.notificationManager?.setPlayer(null)
     }
 }

@@ -20,27 +20,29 @@ class ExoPlayerInstance(private val context: Context) {
 
     fun getExoPlayer(): ExoPlayer? = player
 
-   private fun createPlayer(): ExoPlayer {
-        val player =
+    private fun createPlayer(): ExoPlayer {
+        val creatingPlayer =
             ExoPlayer.Builder(
                 context,
                 DefaultRenderersFactory(context)
-            ).build()
+            )
+                .build()
         val audioAttributes = AudioAttributes.Builder().run {
             setUsage(C.USAGE_MEDIA)
             setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
             build()
         }
-        player.addMediaItem(MediaItem.fromUri("https://hearthis.app/hardanceattack/21-hardance-attack-el-ultimo-el-primero-feat-mc-mike/listen/?s=5np"))
-
-        player.setAudioAttributes(audioAttributes, true)
-        return player
+        creatingPlayer.addMediaItem(MediaItem.fromUri("https://hearthis.app/hardanceattack/21-hardance-attack-el-ultimo-el-primero-feat-mc-mike/listen/?s=5np"))
+        creatingPlayer.setAudioAttributes(audioAttributes, true)
+        creatingPlayer.play()
+        playing = true
+        return creatingPlayer
     }
 
     fun initializePlayer() {
         if (this.player == null) {
             player = createPlayer()
-            this.play()
+            play()
         }
         try {
             //todo: entregar music
@@ -64,4 +66,6 @@ class ExoPlayerInstance(private val context: Context) {
         player?.release()
         onStop()
     }
+
+
 }

@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -23,12 +24,9 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     private lateinit var requestPermission: ActivityResultLauncher<String>
-
     private lateinit var binding: ActivityMainBinding
-    private val repository = HearthisRepository()
-    private lateinit var exoPlayerInstance: ExoPlayerInstance
-    private lateinit var mainViewModel: MainViewModel
 
+    private val mainViewModel: MainViewModel by viewModels()
     @Inject
     lateinit var musicManager: AudioManagerProvider
 
@@ -37,16 +35,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mainViewModel = ViewModelProvider(
-            this,
-            MainViewModelFactory(repository)
-        )[MainViewModel::class.java]
         mainViewModel.getTrackList()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermission.launch(android.Manifest.permission.POST_NOTIFICATIONS)
         }
-        musicManager.getAudioService()?.play()
-
         setupObservers()
 
     }
@@ -71,6 +63,14 @@ class MainActivity : AppCompatActivity() {
         Glide.with(this).load(getString(R.string.cover_uri)).into(binding.ivMainImage)
         Glide.with(this).load(cover).into(binding.ivCover)
         binding.tvSongTitle.text = name
+        binding.ivMainImage.setOnClickListener {
+            musicManager.getAudioService()?.createNotification()
+            mainViewModel.play()
+        }
+
+        binding.ivCover.setOnClickListener {
+            musicManager.getAudioService()?.disposeNotification()
+        }
     }
 
     private fun setupExoPlayer(list: TrackList) {

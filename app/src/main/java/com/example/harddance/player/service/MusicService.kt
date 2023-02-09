@@ -12,8 +12,8 @@ import javax.inject.Inject
 class MusicService : Service() {
 
     companion object {
-        val CHANNEL_ID = "CHANNEL_ID"
-        val NOTIFICATION_ID = 1
+        const val CHANNEL_ID = "CHANNEL_ID"
+        const val NOTIFICATION_ID = 1
         const val MEDIA_SESSION_TAG = "PLAYER_MEDIA_PODCAST"
     }
 
@@ -23,9 +23,16 @@ class MusicService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        notificationManager = HDANotificationManager(this.applicationContext, player.getPlayer())
+        notificationManager = HDANotificationManager(this.applicationContext)
         notificationManager?.initializeNotification()
+    }
 
+    fun createNotification(){
+        notificationManager?.showNotification(player.getPlayer())
+    }
+
+    fun disposeNotification(){
+        notificationManager?.disposeNotification()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -58,7 +65,10 @@ class MusicService : Service() {
         fun getService() = this@MusicService
     }
 
-    fun play() = player.play()
+    fun play() {
+
+    }
+
     fun pause() = player.pause()
 
 }

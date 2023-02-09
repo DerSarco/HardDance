@@ -9,15 +9,12 @@ import com.example.harddance.data.network.entities.User
 import com.example.harddance.data.repository.interfaces.HearthisInterface
 
 class HearthisRepository : HearthisInterface {
-
     override suspend fun getTracks(): TrackList {
         return mapTrackEntity(NetworkService.heartThisService.getTrackList())
     }
-
     override suspend fun getUserInfo(): UserData {
         return mapUserEntity(NetworkService.heartThisService.getUserData())
     }
-
     private fun mapTrackEntity(tracks: TrackNetwork): TrackList {
         val list = arrayListOf<Tracks>()
         tracks.forEach {
